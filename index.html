@@ -1,0 +1,1826 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ЁРОШИ — Суши Челябинск | Самовывоз</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Nunito+Sans:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════
+   CSS VARIABLES & THEMES
+   ═══════════════════════════════════════════════════ */
+:root {
+  --font-display: 'Cormorant Garamond', 'Noto Sans JP', serif;
+  --font-body: 'Nunito Sans', 'Noto Sans JP', sans-serif;
+  --radius: 16px;
+  --radius-sm: 10px;
+  --shadow-sm: 0 2px 8px rgba(0,0,0,.06);
+  --shadow-md: 0 8px 30px rgba(0,0,0,.08);
+  --shadow-lg: 0 20px 60px rgba(0,0,0,.12);
+  --transition: .3s cubic-bezier(.4,0,.2,1);
+  --header-h: 72px;
+}
+
+[data-theme="light"] {
+  --bg-primary: #FAF7F2;
+  --bg-secondary: #FFFFFF;
+  --bg-tertiary: #F0EBE3;
+  --bg-card: #FFFFFF;
+  --bg-card-hover: #FFF8F0;
+  --text-primary: #1A1A1A;
+  --text-secondary: #5A5A5A;
+  --text-tertiary: #8A8A8A;
+  --accent: #C4513D;
+  --accent-hover: #A83D2B;
+  --accent-soft: #FFF0EC;
+  --accent-gold: #C49A3D;
+  --border: #E8E2D8;
+  --border-light: #F0EBE3;
+  --cart-bg: #FFFFFF;
+  --overlay: rgba(26,26,26,.5);
+  --badge: #C4513D;
+  --badge-text: #FFF;
+  --hero-overlay: linear-gradient(135deg, rgba(26,26,26,.65) 0%, rgba(26,26,26,.3) 100%);
+  --cat-active-bg: #C4513D;
+  --cat-active-text: #FFF;
+  --cat-bg: #FFFFFF;
+  --cat-text: #5A5A5A;
+  --input-bg: #FAF7F2;
+  --success: #3D8C5C;
+  --tag-bg: #F5F0E8;
+  --tag-text: #8A7A60;
+  --shimmer: linear-gradient(110deg, #F0EBE3 8%, #FAF7F2 18%, #F0EBE3 33%);
+}
+
+[data-theme="dark"] {
+  --bg-primary: #121212;
+  --bg-secondary: #1A1A1A;
+  --bg-tertiary: #222222;
+  --bg-card: #1E1E1E;
+  --bg-card-hover: #262220;
+  --text-primary: #F0EBE3;
+  --text-secondary: #A8A098;
+  --text-tertiary: #706860;
+  --accent: #E06B56;
+  --accent-hover: #F07D68;
+  --accent-soft: #2A1D18;
+  --accent-gold: #D4AA4D;
+  --border: #2A2A2A;
+  --border-light: #222222;
+  --cart-bg: #1A1A1A;
+  --overlay: rgba(0,0,0,.7);
+  --badge: #E06B56;
+  --badge-text: #FFF;
+  --hero-overlay: linear-gradient(135deg, rgba(0,0,0,.75) 0%, rgba(0,0,0,.4) 100%);
+  --cat-active-bg: #E06B56;
+  --cat-active-text: #FFF;
+  --cat-bg: #1E1E1E;
+  --cat-text: #A8A098;
+  --input-bg: #222222;
+  --success: #4DA670;
+  --tag-bg: #2A2520;
+  --tag-text: #A89878;
+  --shimmer: linear-gradient(110deg, #222 8%, #2A2A2A 18%, #222 33%);
+}
+
+/* ═══════════════════════════════════════════════════
+   RESET & BASE
+   ═══════════════════════════════════════════════════ */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+html {
+  scroll-padding-top: calc(var(--header-h) + 60px);
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background var(--transition), color var(--transition);
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { display:block; max-width:100%; }
+button { cursor:pointer; border:none; background:none; font-family:inherit; }
+a { text-decoration:none; color:inherit; }
+input { font-family:inherit; }
+
+/* ═══════════════════════════════════════════════════
+   SCROLLBAR
+   ═══════════════════════════════════════════════════ */
+::-webkit-scrollbar { width:6px; }
+::-webkit-scrollbar-track { background:var(--bg-primary); }
+::-webkit-scrollbar-thumb { background:var(--border); border-radius:3px; }
+::-webkit-scrollbar-thumb:hover { background:var(--text-tertiary); }
+
+/* ═══════════════════════════════════════════════════
+   HEADER
+   ═══════════════════════════════════════════════════ */
+.header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--header-h);
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border);
+  z-index: 1000;
+  transition: background var(--transition), border var(--transition), box-shadow var(--transition);
+}
+.header.scrolled {
+  box-shadow: var(--shadow-md);
+}
+.header-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 24px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 1px;
+}
+.logo-icon {
+  width: 42px;
+  height: 42px;
+  background: var(--accent);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  color: #fff;
+  flex-shrink: 0;
+}
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Theme Toggle */
+.theme-toggle {
+  width: 44px; height: 44px;
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+  background: var(--bg-tertiary);
+  transition: background var(--transition), transform .2s;
+}
+.theme-toggle:hover { transform: scale(1.08); }
+
+/* Cart Button */
+.cart-btn {
+  position: relative;
+  width: 44px; height: 44px;
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+  background: var(--bg-tertiary);
+  transition: background var(--transition), transform .2s;
+}
+.cart-btn:hover { transform: scale(1.08); }
+.cart-badge {
+  position: absolute;
+  top: -4px; right: -4px;
+  min-width: 20px; height: 20px;
+  background: var(--badge);
+  color: var(--badge-text);
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  padding: 0 5px;
+  transform: scale(0);
+  transition: transform .3s cubic-bezier(.68,-.6,.32,1.6);
+}
+.cart-badge.show { transform: scale(1); }
+
+/* ═══════════════════════════════════════════════════
+   HERO SECTION
+   ═══════════════════════════════════════════════════ */
+.hero {
+  position: relative;
+  width: 100%;
+  height: 520px;
+  margin-top: var(--header-h);
+  overflow: hidden;
+}
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background-image: url('https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=1400&h=600&fit=crop&q=80');
+  background-size: cover;
+  background-position: center;
+  transform: scale(1.05);
+  transition: transform 8s ease-out;
+}
+.hero.loaded .hero-bg { transform: scale(1); }
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--hero-overlay);
+  transition: background var(--transition);
+}
+.hero-content {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: #FFF;
+}
+.hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp .8s .3s forwards;
+}
+.hero-tag::before {
+  content: '';
+  width: 28px; height: 2px;
+  background: var(--accent);
+}
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(40px, 6vw, 72px);
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 16px;
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeUp .8s .5s forwards;
+}
+.hero-sub {
+  font-size: 17px;
+  font-weight: 300;
+  line-height: 1.6;
+  max-width: 480px;
+  margin-bottom: 28px;
+  opacity: .9;
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeUp .8s .7s forwards;
+}
+.hero-actions {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeUp .8s .9s forwards;
+}
+.btn-hero {
+  padding: 14px 32px;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 15px;
+  transition: all var(--transition);
+}
+.btn-hero.primary {
+  background: var(--accent);
+  color: #FFF;
+}
+.btn-hero.primary:hover { background: var(--accent-hover); transform: translateY(-2px); }
+.btn-hero.secondary {
+  background: rgba(255,255,255,.15);
+  color: #FFF;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,.25);
+}
+.btn-hero.secondary:hover { background: rgba(255,255,255,.25); transform: translateY(-2px); }
+
+@keyframes fadeUp {
+  to { opacity:1; transform:translateY(0); }
+}
+
+/* ═══════════════════════════════════════════════════
+   INFO BAR
+   ═══════════════════════════════════════════════════ */
+.info-bar {
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border);
+  transition: background var(--transition), border var(--transition);
+}
+.info-bar-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px 24px;
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+.info-icon {
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  background: var(--accent-soft);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+.info-item strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+/* ═══════════════════════════════════════════════════
+   CATEGORY NAV
+   ═══════════════════════════════════════════════════ */
+.cat-nav-wrap {
+  position: sticky;
+  top: var(--header-h);
+  z-index: 100;
+  background: var(--bg-primary);
+  border-bottom: 1px solid var(--border);
+  transition: background var(--transition), border var(--transition);
+}
+.cat-nav {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 14px 24px;
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.cat-nav::-webkit-scrollbar { display:none; }
+.cat-btn {
+  padding: 10px 20px;
+  border-radius: 50px;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  background: var(--cat-bg);
+  color: var(--cat-text);
+  border: 1px solid var(--border);
+  transition: all var(--transition);
+}
+.cat-btn:hover { border-color: var(--accent); color: var(--accent); }
+.cat-btn.active {
+  background: var(--cat-active-bg);
+  color: var(--cat-active-text);
+  border-color: var(--cat-active-bg);
+}
+
+/* ═══════════════════════════════════════════════════
+   MENU SECTIONS
+   ═══════════════════════════════════════════════════ */
+.menu-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 24px 24px 80px;
+}
+.menu-section {
+  margin-bottom: 48px;
+}
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 24px;
+  padding-top: 8px;
+}
+.section-emoji {
+  width: 48px; height: 48px;
+  background: var(--accent-soft);
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px;
+  flex-shrink: 0;
+}
+.section-title-group {}
+.section-title {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+.section-count {
+  font-size: 13px;
+  color: var(--text-tertiary);
+  font-weight: 400;
+}
+
+/* Menu Grid */
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+}
+
+/* Menu Card */
+.menu-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: all var(--transition);
+  display: flex;
+  flex-direction: column;
+}
+.menu-card:hover {
+  border-color: var(--accent);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-3px);
+  background: var(--bg-card-hover);
+}
+.card-img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  transition: transform .5s ease;
+}
+.menu-card:hover .card-img { transform: scale(1.06); }
+.card-img-wrap {
+  overflow: hidden;
+  position: relative;
+}
+.card-weight {
+  position: absolute;
+  bottom: 10px; right: 10px;
+  background: rgba(0,0,0,.6);
+  backdrop-filter: blur(8px);
+  color: #FFF;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+.card-body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.card-name {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+.card-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-bottom: 14px;
+  flex: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.card-price {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--accent);
+  font-family: var(--font-display);
+}
+.card-price span {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text-tertiary);
+}
+
+/* Quantity Control */
+.qty-control {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  transition: background var(--transition);
+}
+.qty-btn {
+  width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  color: var(--text-primary);
+  transition: all .2s;
+}
+.qty-btn:hover { background: var(--accent); color: #FFF; }
+.qty-val {
+  width: 32px;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.add-btn {
+  padding: 8px 20px;
+  border-radius: var(--radius-sm);
+  background: var(--accent);
+  color: #FFF;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all .2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.add-btn:hover { background: var(--accent-hover); transform: scale(1.04); }
+.add-btn:active { transform: scale(.97); }
+
+/* ═══════════════════════════════════════════════════
+   CART DRAWER
+   ═══════════════════════════════════════════════════ */
+.cart-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--overlay);
+  z-index: 2000;
+  opacity: 0;
+  visibility: hidden;
+  transition: all .35s;
+}
+.cart-overlay.open { opacity:1; visibility:visible; }
+
+.cart-drawer {
+  position: fixed;
+  top: 0; right: 0;
+  width: 420px;
+  max-width: 100%;
+  height: 100%;
+  background: var(--cart-bg);
+  z-index: 2001;
+  transform: translateX(100%);
+  transition: transform .4s cubic-bezier(.4,0,.2,1);
+  display: flex;
+  flex-direction: column;
+}
+.cart-overlay.open + .cart-drawer,
+.cart-drawer.open { transform: translateX(0); }
+
+.cart-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.cart-title {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 700;
+}
+.cart-close {
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  background: var(--bg-tertiary);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+  transition: all .2s;
+}
+.cart-close:hover { background: var(--accent); color: #FFF; }
+
+.cart-items {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 24px;
+}
+.cart-empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-tertiary);
+}
+.cart-empty-icon { font-size: 48px; margin-bottom: 12px; }
+.cart-empty-text { font-size: 15px; }
+
+.cart-item {
+  display: flex;
+  gap: 14px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border-light);
+  align-items: center;
+}
+.cart-item-info { flex:1; }
+.cart-item-name {
+  font-weight: 600;
+  font-size: 15px;
+  margin-bottom: 4px;
+  color: var(--text-primary);
+}
+.cart-item-price {
+  font-size: 14px;
+  color: var(--accent);
+  font-weight: 600;
+}
+.cart-item-remove {
+  font-size: 18px;
+  color: var(--text-tertiary);
+  padding: 4px;
+  transition: color .2s;
+}
+.cart-item-remove:hover { color: var(--accent); }
+
+.cart-footer {
+  padding: 20px 24px;
+  border-top: 1px solid var(--border);
+  background: var(--bg-secondary);
+}
+.cart-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.cart-total-label {
+  font-size: 16px;
+  color: var(--text-secondary);
+}
+.cart-total-value {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.checkout-btn {
+  width: 100%;
+  padding: 16px;
+  border-radius: var(--radius-sm);
+  background: var(--accent);
+  color: #FFF;
+  font-size: 16px;
+  font-weight: 600;
+  transition: all .2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.checkout-btn:hover { background: var(--accent-hover); }
+.checkout-btn:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+/* ═══════════════════════════════════════════════════
+   ORDER MODAL
+   ═══════════════════════════════════════════════════ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--overlay);
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  visibility: hidden;
+  transition: all .35s;
+}
+.modal-overlay.open { opacity:1; visibility:visible; }
+
+.modal {
+  background: var(--bg-secondary);
+  border-radius: var(--radius);
+  width: 100%;
+  max-width: 480px;
+  max-height: 90vh;
+  overflow-y: auto;
+  transform: translateY(30px) scale(.96);
+  transition: transform .4s cubic-bezier(.4,0,.2,1);
+  border: 1px solid var(--border);
+}
+.modal-overlay.open .modal { transform: translateY(0) scale(1); }
+
+.modal-header {
+  padding: 24px 24px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.modal-title {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 700;
+}
+.modal-close {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  background: var(--bg-tertiary);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  transition: all .2s;
+}
+.modal-close:hover { background: var(--accent); color: #FFF; }
+
+.modal-body {
+  padding: 24px;
+}
+.order-summary {
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  margin-bottom: 24px;
+}
+.order-summary-title {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.order-summary-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: var(--text-primary);
+  padding: 5px 0;
+}
+.order-summary-total {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 700;
+  font-size: 18px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+  color: var(--text-primary);
+}
+
+.form-group {
+  margin-bottom: 18px;
+}
+.form-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+.form-input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 16px;
+  background: var(--input-bg);
+  color: var(--text-primary);
+  transition: border var(--transition), background var(--transition);
+  outline: none;
+}
+.form-input:focus {
+  border-color: var(--accent);
+  background: var(--bg-secondary);
+}
+.form-input::placeholder { color: var(--text-tertiary); }
+.form-input.error { border-color: #D44; }
+.form-hint {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  margin-top: 4px;
+}
+.form-error {
+  font-size: 12px;
+  color: #D44;
+  margin-top: 4px;
+  display: none;
+}
+.form-error.show { display: block; }
+
+.pickup-info {
+  background: var(--accent-soft);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+.pickup-info-icon { font-size: 22px; flex-shrink: 0; line-height: 1.4; }
+.pickup-info-text {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+.pickup-info-text strong { color: var(--text-primary); }
+
+.submit-btn {
+  width: 100%;
+  padding: 16px;
+  border-radius: var(--radius-sm);
+  background: var(--accent);
+  color: #FFF;
+  font-size: 16px;
+  font-weight: 600;
+  transition: all .2s;
+}
+.submit-btn:hover { background: var(--accent-hover); }
+.submit-btn:disabled { opacity:.5; cursor:not-allowed; }
+
+/* Success */
+.order-success {
+  text-align: center;
+  padding: 30px 0;
+  display: none;
+}
+.order-success.show { display: block; }
+.order-form-wrap { display: block; }
+.order-form-wrap.hide { display: none; }
+.success-check {
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  background: var(--success);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  color: #FFF;
+  margin-bottom: 16px;
+}
+.success-title {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.success-text {
+  font-size: 15px;
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+.success-btn {
+  padding: 12px 28px;
+  border-radius: var(--radius-sm);
+  background: var(--accent);
+  color: #FFF;
+  font-weight: 600;
+  font-size: 15px;
+  transition: all .2s;
+}
+.success-btn:hover { background: var(--accent-hover); }
+
+/* ═══════════════════════════════════════════════════
+   FOOTER
+   ═══════════════════════════════════════════════════ */
+.footer {
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border);
+  padding: 40px 24px;
+  transition: background var(--transition), border var(--transition);
+}
+.footer-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.footer-brand {
+  max-width: 300px;
+}
+.footer-brand .logo {
+  margin-bottom: 12px;
+}
+.footer-brand p {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+.footer-col h4 {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: var(--text-primary);
+}
+.footer-col p,
+.footer-col a {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  display: block;
+}
+.footer-col a:hover { color: var(--accent); }
+.footer-bottom {
+  max-width: 1400px;
+  margin: 24px auto 0;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-tertiary);
+}
+
+/* ═══════════════════════════════════════════════════
+   MOBILE CART BAR
+   ═══════════════════════════════════════════════════ */
+.mobile-cart-bar {
+  display: none;
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  z-index: 999;
+  padding: 12px 20px;
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border);
+  box-shadow: 0 -4px 20px rgba(0,0,0,.1);
+  transform: translateY(100%);
+  transition: transform .3s, background var(--transition);
+}
+.mobile-cart-bar.show { transform: translateY(0); }
+.mobile-cart-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.mobile-cart-info {
+  font-size: 14px;
+}
+.mobile-cart-info strong {
+  font-size: 18px;
+  color: var(--text-primary);
+  display: block;
+}
+.mobile-cart-info span { color: var(--text-secondary); }
+.mobile-cart-btn {
+  padding: 12px 24px;
+  border-radius: var(--radius-sm);
+  background: var(--accent);
+  color: #FFF;
+  font-weight: 600;
+  font-size: 15px;
+  transition: all .2s;
+  white-space: nowrap;
+}
+
+/* ═══════════════════════════════════════════════════
+   TOAST
+   ═══════════════════════════════════════════════════ */
+.toast {
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--text-primary);
+  color: var(--bg-primary);
+  padding: 12px 24px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 500;
+  opacity: 0;
+  visibility: hidden;
+  transition: all .3s;
+  z-index: 5000;
+  white-space: nowrap;
+  box-shadow: var(--shadow-lg);
+}
+.toast.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ═══════════════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  :root { --header-h: 60px; }
+
+  .hero { height: 400px; }
+  .hero h1 { font-size: 32px; }
+  .hero-sub { font-size: 15px; }
+
+  .info-bar-inner {
+    flex-direction: column;
+    gap: 14px;
+    align-items: flex-start;
+  }
+
+  .menu-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .menu-card {
+    flex-direction: row;
+    align-items: stretch;
+  }
+  .card-img-wrap {
+    width: 120px;
+    min-height: 120px;
+    flex-shrink: 0;
+  }
+  .card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .card-body { padding: 12px; }
+  .card-name { font-size: 16px; }
+  .card-desc { font-size: 12px; -webkit-line-clamp: 2; margin-bottom: 10px; }
+  .card-price { font-size: 18px; }
+  .card-weight {
+    top: 8px; right: auto; left: 8px; bottom: auto;
+    font-size: 11px;
+    padding: 3px 8px;
+  }
+
+  .section-title { font-size: 22px; }
+
+  .cart-drawer { width: 100%; }
+
+  .mobile-cart-bar { display: block; }
+
+  .footer-inner {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .btn-hero { padding: 12px 24px; font-size: 14px; }
+  .logo { font-size: 22px; }
+  .logo-icon { width: 36px; height: 36px; font-size: 18px; }
+}
+
+@media (max-width: 480px) {
+  .hero { height: 340px; }
+  .hero h1 { font-size: 28px; }
+  .hero-actions { flex-direction: column; }
+  .btn-hero { text-align: center; }
+  .card-img-wrap { width: 100px; min-height: 100px; }
+}
+
+/* ═══════════════════════════════════════════════════
+   UTILITY ANIMATIONS
+   ═══════════════════════════════════════════════════ */
+@keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.15)} }
+.pulse { animation: pulse .4s ease; }
+</style>
+</head>
+<body>
+<!-- ═══════════ HEADER ═══════════ -->
+<header class="header" id="header">
+  <div class="header-inner">
+    <a href="#" class="logo">
+      <div class="logo-icon">鮨</div>
+      <span>ЁРОШИ</span>
+    </a>
+    <div class="header-right">
+      <button class="theme-toggle" id="themeToggle" aria-label="Сменить тему">🌙</button>
+      <button class="cart-btn" id="cartToggle" aria-label="Корзина" onclick="openCart()">
+        🛒
+        <span class="cart-badge" id="cartBadge">0</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ═══════════ HERO ═══════════ -->
+<section class="hero" id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-tag">Доставка и самовывоз</div>
+    <h1>Вкус Японии<br>в Челябинске</h1>
+    <p class="hero-sub">Свежие роллы, суши и горячие блюда. Готовим с любовью из качественных ингредиентов каждый день.</p>
+    <div class="hero-actions">
+      <button class="btn-hero primary" onclick="scrollToMenu()">Смотреть меню</button>
+      <a href="https://yandex.ru/maps/?text=Челябинск+Елькина+91" target="_blank" class="btn-hero secondary">📍 Елькина 91</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ INFO BAR ═══════════ -->
+<div class="info-bar">
+  <div class="info-bar-inner">
+    <div class="info-item">
+      <div class="info-icon">📍</div>
+      <div><strong>Самовывоз</strong><br>ул. Елькина, 91, Челябинск</div>
+    </div>
+    <div class="info-item">
+      <div class="info-icon">🕐</div>
+      <div><strong>Время работы</strong><br>Ежедневно 10:00 – 22:00</div>
+    </div>
+    <div class="info-item">
+      <div class="info-icon">⚡</div>
+      <div><strong>Готовность</strong><br>30–45 минут после заказа</div>
+    </div>
+    <div class="info-item">
+      <div class="info-icon">🎁</div>
+      <div><strong>Имбирь и васаби</strong><br>В подарок к каждому заказу</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ CATEGORY NAV ═══════════ -->
+<nav class="cat-nav-wrap" id="catNav">
+  <div class="cat-nav" id="catNavInner"></div>
+</nav>
+
+<!-- ═══════════ MENU ═══════════ -->
+<main class="menu-container" id="menuContainer"></main>
+
+<!-- ═══════════ FOOTER ═══════════ -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="logo">
+        <div class="logo-icon">鮨</div>
+        <span>ЁРОШИ</span>
+      </div>
+      <p>Ресторан японской кухни в Челябинске. Свежие ингредиенты, авторские рецепты и забота о каждом госте.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Контакты</h4>
+      <p>📍 ул. Елькина, 91</p>
+      <p>📞 +7 (351) 000-00-00</p>
+      <p>🕐 10:00 – 22:00</p>
+    </div>
+    <div class="footer-col">
+      <h4>Навигация</h4>
+      <a href="#" onclick="scrollToMenu()">Меню</a>
+      <a href="#" onclick="openOrderModal()">Оформить заказ</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    © 2026 ЁРОШИ. Все права защищены.
+  </div>
+</footer>
+
+<!-- ═══════════ CART DRAWER ═══════════ -->
+<div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+<aside class="cart-drawer" id="cartDrawer">
+  <div class="cart-header">
+    <div class="cart-title">🛒 Корзина</div>
+    <button class="cart-close" onclick="closeCart()">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <div class="cart-empty">
+      <div class="cart-empty-icon">🍱</div>
+      <div class="cart-empty-text">Корзина пуста.<br>Добавьте что-нибудь вкусное!</div>
+    </div>
+  </div>
+  <div class="cart-footer" id="cartFooter" style="display:none;">
+    <div class="cart-total">
+      <span class="cart-total-label">Итого</span>
+      <span class="cart-total-value" id="cartTotal">0 ₽</span>
+    </div>
+    <button class="checkout-btn" onclick="openOrderModal()">Оформить заказ →</button>
+  </div>
+</aside>
+
+<!-- ═══════════ ORDER MODAL ═══════════ -->
+<div class="modal-overlay" id="orderModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Оформление заказа</div>
+      <button class="modal-close" onclick="closeOrderModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="order-form-wrap" id="orderFormWrap">
+        <div class="order-summary" id="orderSummary"></div>
+
+        <div class="pickup-info">
+          <div class="pickup-info-icon">📍</div>
+          <div class="pickup-info-text">
+            Самовывоз по адресу:<br>
+            <strong>ул. Елькина, 91, Челябинск</strong><br>
+            Готовность 30–45 минут
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="customerName">Ваше имя *</label>
+          <input type="text" class="form-input" id="customerName" placeholder="Как к вам обращаться?" autocomplete="name">
+          <div class="form-error" id="nameError">Пожалуйста, введите ваше имя</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="customerPhone">Телефон *</label>
+          <input type="tel" class="form-input" id="customerPhone" placeholder="+7 (___) ___-__-__" autocomplete="tel">
+          <div class="form-error" id="phoneError">Введите корректный номер телефона</div>
+          <div class="form-hint">Мы позвоним, когда заказ будет готов</div>
+        </div>
+
+        <button class="submit-btn" id="submitOrder" onclick="submitOrder()">
+          Подтвердить заказ
+        </button>
+      </div>
+
+      <div class="order-success" id="orderSuccess">
+        <div class="success-check">✓</div>
+        <div class="success-title">Заказ принят!</div>
+        <div class="success-text">
+          Мы позвоним вам, когда всё будет готово.<br>
+          Ждём вас по адресу <strong>ул. Елькина, 91</strong> 🎉
+        </div>
+        <button class="success-btn" onclick="resetOrder()">Отлично!</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ MOBILE CART BAR ═══════════ -->
+<div class="mobile-cart-bar" id="mobileCartBar">
+  <div class="mobile-cart-inner">
+    <div class="mobile-cart-info">
+      <span id="mobileCartCount">0 шт.</span>
+      <strong id="mobileCartTotal">0 ₽</strong>
+    </div>
+    <button class="mobile-cart-btn" onclick="openCart()">Корзина →</button>
+  </div>
+</div>
+
+<!-- ═══════════ TOAST ═══════════ -->
+<div class="toast" id="toast"></div>
+
+<script>
+/* ═══════════════════════════════════════════════════
+   MENU DATA
+   ═══════════════════════════════════════════════════ */
+const MENU_DATA = [
+  {
+    id: 'baked',
+    name: 'Запечённые и фирменные роллы',
+    emoji: '🔥',
+    images: [
+      'https://images.unsplash.com/photo-1617196034796-73dfa7b1fd56?w=400&h=300&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1611143669185-af224c5e3252?w=400&h=300&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=400&h=300&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1559410545-0bdcd187e0a6?w=400&h=300&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1553621042-f6e147245754?w=400&h=300&fit=crop&q=80',
+    ],
+    items: [
+      { name:'Цыплёнок кранч', desc:'Сыр сливочный, курица копчёная, огурец, перец болгарский, лист салата, лук криспи, унаги соус.', weight:'307 г', price:390 },
+      { name:'Краш', desc:'Сыр сливочный, копчёная курица, спайси соус, сырная шапочка, терияки соус.', weight:'297 г', price:365 },
+      { name:'Зачётный', desc:'Сыр сливочный, лосось обжаренный в соусе терияки, сырная шапочка, унаги соус.', weight:'347 г', price:390 },
+      { name:'Тайская креветка', desc:'Сыр сливочный, креветка в кляре, салат айсберг, унаги соус, том ям соус, микрозелень.', weight:'260 г', price:400 },
+      { name:'Креветка в Азии', desc:'Сыр сливочный, креветка в кляре, салат айсберг, сырная шапочка, унаги соус, том ям соус.', weight:'322 г', price:385 },
+      { name:'Тайский краб', desc:'Сыр сливочный, крем-краб, салат айсберг, унаги соус, том ям соус, микрозелень, рисовые шарики.', weight:'256 г', price:400 },
+      { name:'Хрустящая курочка', desc:'Сыр сливочный, курица копчёная, помидоры, икра тобико, криспи лук, сырная шапочка, унаги соус.', weight:'357 г', price:395 },
+      { name:'Нежный', desc:'Сыр сливочный, крем-краб, помидоры, икра тобико, унаги соус, кунжут, микрозелень.', weight:'277 г', price:400 },
+      { name:'Криспи ХОТ', desc:'Сыр сливочный, курица копчёная, перец болгарский, сырная шапочка, унаги соус.', weight:'352 г', price:385 },
+      { name:'Тейсти', desc:'Сыр сливочный, крем-краб, помидор, курица, икра тобико, унаги соус, том ям соус.', weight:'352 г', price:395 },
+      { name:'Пикантная креветка', desc:'Сыр сливочный, огурец, креветка отварная, шрирачи соус, унаги соус.', weight:'292 г', price:395 },
+      { name:'Темпура с креветкой и манго', desc:'Нори, рис, сыр сливочный, креветка отварная, кляр, сухари, манго соус, унаги соус.', weight:'327 г', price:375 },
+      { name:'Креветка Тропик', desc:'Нори, рис, сыр сливочный, омлет, креветка отварная, сырная шапочка, манго чили соус.', weight:'362 г', price:420 },
+      { name:'Краб и креветка', desc:'Нори, рис, сыр сливочный, огурец, креветка в кляре, фирменная шапочка с крабом, терияки соус.', weight:'322 г', price:400 },
+    ]
+  },
+  {
+    id: 'classic',
+    name: 'Классические роллы',
+    emoji: '🍣',
+    images: [
+      'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=400&h=300&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1564489563601-c53cfc451e93?w=400&h=300&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1583623025817-d180a2221d0a?w=400&h=300&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1611143669185-af224c5e3252?w=400&h=300&fit=crop&q=80',
+    ],
+    items: [
+      { name:'Эби ролл', desc:'Сыр сливочный, креветка в кляре, огурец, икра тобико.', weight:'280 г', price:440 },
+      { name:'Эби шичими', desc:'Сыр сливочный, креветка отварная, огурец, омлет, шрирачи соус, сладкий чили, ореховый соус, шичими.', weight:'312 г', price:450 },
+      { name:'Филадельфия', desc:'Сыр сливочный, лосось, огурец.', weight:'301 г', price:550 },
+      { name:'Санрайз', desc:'Сыр сливочный, креветка, огурец, шрирачи, унаги, шеф соус, нити чили, кунжут, микрозелень.', weight:'295 г', price:480 },
+      { name:'Осака', desc:'Креветка отварная, крем-краб, сыр сливочный, унаги соус, микрозелень.', weight:'282 г', price:400 },
+      { name:'Куросио', desc:'Сыр сливочный, отварная креветка, огурец, унаги соус.', weight:'266 г', price:480 },
+      { name:'Краб Лайт', desc:'Сыр сливочный, крем-краб, помидор, икра тобико, унаги соус, шеф соус, микрозелень.', weight:'294 г', price:400 },
+      { name:'Канада', desc:'Сыр сливочный, лосось, угорь, огурец, унаги соус, кунжут.', weight:'304 г', price:570 },
+      { name:'Калифорния 2.0', desc:'Крем-краб, огурец, икра тобико, шеф соус, микрозелень.', weight:'294 г', price:440 },
+      { name:'Дракон', desc:'Сыр сливочный, лосось, угорь, огурец, икра тобико.', weight:'280 г', price:480 },
+      { name:'Краб лайт + салат фреш', desc:'Краб лайт с салатом из руколы, черри, айсберг, огурец, фирменная заправка.', weight:'393 г', price:460 },
+      { name:'Филадельфия + салат фреш', desc:'Филадельфия с салатом из руколы, черри, айсберг, огурец, фирменная заправка.', weight:'396 г', price:610 },
+      { name:'Спешл', desc:'Сыр сливочный, огурец, лосось, шрирачи, шеф соус, терияки, нити чили, микрозелень, тобико.', weight:'297 г', price:500 },
+      { name:'Шеф терияки', desc:'Лосось терияки, крем-краб, огурец, стружка тунца, шеф соус.', weight:'282 г', price:440 },
+      { name:'Хокку', desc:'Сыр сливочный, лосось в терияки, огурец, тобико, кунжут, унаги, лук криспи.', weight:'302 г', price:440 },
+      { name:'Фиеста', desc:'Сливочный сыр, креветка в кляре, огурец, помидор, мексиканская лепёшка.', weight:'225 г', price:440 },
+    ]
+  },
+  {
+    id: 'sets',
+    name: 'Сеты',
+    emoji: '🍱',
+    images: [
+      'https://images.unsplash.com/photo-1559410545-0bdcd187e0a6?w=400&h=300&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=400&h=300&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1617196034796-73dfa7b1fd56?w=400&h=300&fit=crop&q=80',
+    ],
+    items: [
+      { name:'Сет Пикник', desc:'Филадельфия лайт, краб и креветка, креветка тропик.', weight:'975 г', price:1140 },
+      { name:'Сет на каждый день', desc:'Краб и креветка, сатори.', weight:'626 г', price:730 },
+      { name:'Сет Бинго', desc:'Куросио, Калифорния 2.0, Цыплёнок кранч, Вулкан, Темпура с креветкой.', weight:'1 506 г', price:1900 },
+      { name:'Сет Аркадий', desc:'Осака, Хокку, Эби шичими.', weight:'820 г', price:1180 },
+      { name:'Пати Сет', desc:'Филадельфия лайт, Осака, Дзен, Чикен, Тайфун, Зачётный, Темпура кани, Хокку.', weight:'2 450 г', price:3130 },
+      { name:'Сет Конго 2.0', desc:'Филадельфия лайт, Краб лайт, Краш, Зачётный.', weight:'1 228 г', price:1510 },
+      { name:'Сет Жара', desc:'Фирменный набор запечённых и горячих роллов.', weight:'910 г', price:1310 },
+      { name:'Сет Грин', desc:'Тайский краб, тайская креветка, осака, нежный.', weight:'1 077 г', price:1540 },
+      { name:'Сет Базовый Минимум', desc:'Канада, Краш, Осака, Тейсти.', weight:'1 237 г', price:1690 },
+      { name:'Сити Сет', desc:'Филадельфия лайт, нежный, хрустящая курочка, тори.', weight:'1 177 г', price:1540 },
+      { name:'Сет Всё включено', desc:'Филадельфия лайт, жареный ролл с лососем, Куросио, Пикантная креветка, Тайский краб, Креветка в Азии, Нежный.', weight:'2 026 г', price:2840 },
+      { name:'Сет Флеш', desc:'Куросио, краб лайт, хоккайдо.', weight:'840 г', price:1170 },
+    ]
+  },
+  {
+    id: 'tempura',
+    name: 'Темпура роллы',
+    emoji: '🍤',
+    images: [
+      'https://images.unsplash.com/photo-1553621042-f6e147245754?w=400&h=300&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1617196034796-73dfa7b1fd56?w=400&h=300&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=400&h=300&fit=crop&q=80',
+    ],
+    items: [
+      { name:'Хотто', desc:'Сыр сливочный, лосось, угорь, огурцы, кляр, сухари.', weight:'342 г', price:460 },
+      { name:'Темпура с угрем', desc:'Сыр сливочный, угорь, огурец, кляр, сухари.', weight:'342 г', price:460 },
+      { name:'Темпура с курицей', desc:'Сыр сливочный, курица копчёная, огурец, кляр, сухари.', weight:'342 г', price:430 },
+      { name:'Темпура с креветкой', desc:'Сыр сливочный, креветка жареная в кляре, огурец, кляр, сухари.', weight:'327 г', price:450 },
+      { name:'Жареный ролл с лососем + салат', desc:'Сливочный сыр, омлет, лосось, унаги, кунжут, рисовые шарики. Салат из руколы, черри, айсберг.', weight:'420 г', price:510 },
+      { name:'Жареный ролл с креветкой + салат', desc:'Сыр сливочный, креветка в кляре, огурец, кляр, сухари, унаги. Салат из руколы, черри, айсберг.', weight:'414 г', price:490 },
+    ]
+  },
+  {
+    id: 'hot',
+    name: 'Горячие блюда и супы',
+    emoji: '🍜',
+    images: [
+      'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=400&h=300&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=400&h=300&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1555126634-323283e090fa?w=400&h=300&fit=crop&q=80',
+    ],
+    items: [
+      { name:'Том ям с креветками', desc:'Рыбный бульон, креветки, паста том ям, лук зелёный, кинза, шампиньоны, черри, лайм, кокосовое молоко. Рис отдельно.', weight:'500 г', price:410 },
+      { name:'Удон терияки с креветками', desc:'Лапша удон, креветки, шампиньоны, фасоль стручковая, зелёный лук, кунжут, соус терияки.', weight:'400 г', price:380 },
+      { name:'Удон терияки с цыплёнком', desc:'Лапша удон, курица, шампиньоны, фасоль стручковая, зелёный лук, кунжут, соус терияки.', weight:'400 г', price:330 },
+      { name:'Курица кунг пао', desc:'Куриный поп-корн, рис, арахис, болгарский перец, шампиньоны и перец чили. Умеренно острое.', weight:'331 г', price:330 },
+    ]
+  },
+  {
+    id: 'baked-sushi',
+    name: 'Запечённые суши и мини-роллы',
+    emoji: '🍘',
+    images: [
+      'https://images.unsplash.com/photo-1611143669185-af224c5e3252?w=400&h=300&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1559410545-0bdcd187e0a6?w=400&h=300&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1564489563601-c53cfc451e93?w=400&h=300&fit=crop&q=80',
+    ],
+    items: [
+      { name:'Оазис запечённый', desc:'Сливочный сыр, огурец, лосось терияки, сырная шапочка.', weight:'337 г', price:480 },
+      { name:'Чикен ролл запечённый', desc:'Сыр сливочный, курица копчёная, перец болгарский, сырная шапочка, сладкий чили, терияки.', weight:'332 г', price:430 },
+      { name:'Эби запечённый', desc:'Сыр сливочный, креветка отварная, огурец, сырная шапочка, терияки соус.', weight:'322 г', price:450 },
+    ]
+  }
+];
+
+/* ═══════════════════════════════════════════════════
+   STATE
+   ═══════════════════════════════════════════════════ */
+let cart = [];
+let toastTimer;
+
+/* ═══════════════════════════════════════════════════
+   RENDER MENU
+   ═══════════════════════════════════════════════════ */
+function renderMenu() {
+  const nav = document.getElementById('catNavInner');
+  const container = document.getElementById('menuContainer');
+
+  nav.innerHTML = MENU_DATA.map((cat, i) =>
+    `<button class="cat-btn ${i===0?'active':''}" data-cat="${cat.id}" onclick="scrollToCat('${cat.id}', this)">
+      ${cat.emoji} ${cat.name}
+    </button>`
+  ).join('');
+
+  container.innerHTML = MENU_DATA.map(cat => {
+    const count = cat.items.length;
+    const word = count === 1 ? 'позиция' : count < 5 ? 'позиции' : 'позиций';
+
+    const cards = cat.items.map((item, i) => {
+      const img = cat.images[i % cat.images.length];
+      const uid = `${cat.id}-${i}`;
+      return `
+      <div class="menu-card" id="card-${uid}">
+        <div class="card-img-wrap">
+          <img class="card-img" src="${img}" alt="${item.name}" loading="lazy">
+          <span class="card-weight">${item.weight}</span>
+        </div>
+        <div class="card-body">
+          <div class="card-name">${item.name}</div>
+          <div class="card-desc">${item.desc}</div>
+          <div class="card-footer">
+            <div class="card-price">${item.price} <span>₽</span></div>
+            <div id="ctrl-${uid}">
+              <button class="add-btn" onclick="addToCart('${uid}', '${item.name.replace(/'/g,"\\'")}', ${item.price})">
+                + В корзину
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+
+    return `
+    <section class="menu-section" id="section-${cat.id}">
+      <div class="section-header">
+        <div class="section-emoji">${cat.emoji}</div>
+        <div class="section-title-group">
+          <div class="section-title">${cat.name}</div>
+          <div class="section-count">${count} ${word}</div>
+        </div>
+      </div>
+      <div class="menu-grid">${cards}</div>
+    </section>`;
+  }).join('');
+}
+
+/* ═══════════════════════════════════════════════════
+   CATEGORY NAVIGATION
+   ═══════════════════════════════════════════════════ */
+function scrollToCat(id, btn) {
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const el = document.getElementById(`section-${id}`);
+  if (el) {
+    const headerH = document.getElementById('header').offsetHeight;
+    const navH = document.getElementById('catNav').offsetHeight;
+    const top = el.getBoundingClientRect().top + window.scrollY - headerH - navH - 16;
+    window.scrollTo({ top, behavior: 'smooth' });
+  }
+}
+
+function scrollToMenu() {
+  const el = document.getElementById('menuContainer');
+  if (el) {
+    const headerH = document.getElementById('header').offsetHeight;
+    const navH = document.getElementById('catNav').offsetHeight;
+    const top = el.getBoundingClientRect().top + window.scrollY - headerH - navH - 16;
+    window.scrollTo({ top, behavior: 'smooth' });
+  }
+}
+
+// Auto-highlight category on scroll
+function updateActiveCategory() {
+  const offset = window.scrollY + 180;
+  let active = null;
+  MENU_DATA.forEach(cat => {
+    const sec = document.getElementById(`section-${cat.id}`);
+    if (sec && sec.offsetTop <= offset) active = cat.id;
+  });
+  if (active) {
+    const nav = document.getElementById('catNavInner');
+    document.querySelectorAll('.cat-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.cat === active);
+      if (b.dataset.cat === active && nav) {
+        // Horizontal-only scroll — never touches page vertical position
+        const navRect = nav.getBoundingClientRect();
+        const btnRect = b.getBoundingClientRect();
+        const scrollTarget = nav.scrollLeft + (btnRect.left - navRect.left) - (navRect.width / 2) + (btnRect.width / 2);
+        nav.scrollTo({ left: scrollTarget, behavior: 'smooth' });
+      }
+    });
+  }
+}
+
+/* ═══════════════════════════════════════════════════
+   CART LOGIC
+   ═══════════════════════════════════════════════════ */
+function addToCart(uid, name, price) {
+  const existing = cart.find(c => c.uid === uid);
+  if (existing) {
+    existing.qty++;
+  } else {
+    cart.push({ uid, name, price, qty: 1 });
+  }
+  updateCartUI();
+  updateItemControl(uid);
+  showToast(`${name} добавлен в корзину`);
+}
+
+function removeFromCart(uid) {
+  const idx = cart.findIndex(c => c.uid === uid);
+  if (idx > -1) {
+    cart[idx].qty--;
+    if (cart[idx].qty <= 0) cart.splice(idx, 1);
+  }
+  updateCartUI();
+  updateItemControl(uid);
+}
+
+function updateItemControl(uid) {
+  const ctrl = document.getElementById(`ctrl-${uid}`);
+  if (!ctrl) return;
+  const item = cart.find(c => c.uid === uid);
+  if (item && item.qty > 0) {
+    ctrl.innerHTML = `
+      <div class="qty-control">
+        <button class="qty-btn" onclick="removeFromCart('${uid}')">−</button>
+        <span class="qty-val">${item.qty}</span>
+        <button class="qty-btn" onclick="addToCart('${uid}', '${item.name.replace(/'/g,"\\'")}', ${item.price})">+</button>
+      </div>`;
+  } else {
+    // Find the item data to restore the add button
+    let itemData = null;
+    MENU_DATA.forEach(cat => {
+      const parts = uid.split('-');
+      if (parts[0] === cat.id) {
+        itemData = cat.items[parseInt(parts[1])];
+      }
+    });
+    if (itemData) {
+      ctrl.innerHTML = `
+        <button class="add-btn" onclick="addToCart('${uid}', '${itemData.name.replace(/'/g,"\\'")}', ${itemData.price})">
+          + В корзину
+        </button>`;
+    }
+  }
+}
+
+function updateCartUI() {
+  const badge = document.getElementById('cartBadge');
+  const items = document.getElementById('cartItems');
+  const footer = document.getElementById('cartFooter');
+  const total = document.getElementById('cartTotal');
+  const mobileBar = document.getElementById('mobileCartBar');
+  const mobileCount = document.getElementById('mobileCartCount');
+  const mobileTotal = document.getElementById('mobileCartTotal');
+
+  const totalQty = cart.reduce((s, c) => s + c.qty, 0);
+  const totalPrice = cart.reduce((s, c) => s + c.price * c.qty, 0);
+
+  badge.textContent = totalQty;
+  badge.classList.toggle('show', totalQty > 0);
+
+  if (totalQty > 0) {
+    footer.style.display = 'block';
+    total.textContent = formatPrice(totalPrice);
+    mobileBar.classList.add('show');
+    const w = totalQty === 1 ? 'товар' : totalQty < 5 ? 'товара' : 'товаров';
+    mobileCount.textContent = `${totalQty} ${w}`;
+    mobileTotal.textContent = formatPrice(totalPrice);
+
+    items.innerHTML = cart.map(c => `
+      <div class="cart-item">
+        <div class="cart-item-info">
+          <div class="cart-item-name">${c.name} × ${c.qty}</div>
+          <div class="cart-item-price">${formatPrice(c.price * c.qty)}</div>
+        </div>
+        <div class="qty-control" style="margin-right:8px">
+          <button class="qty-btn" onclick="removeFromCart('${c.uid}')">−</button>
+          <span class="qty-val">${c.qty}</span>
+          <button class="qty-btn" onclick="addToCart('${c.uid}','${c.name.replace(/'/g,"\\'")}',${c.price})">+</button>
+        </div>
+        <button class="cart-item-remove" onclick="deleteFromCart('${c.uid}')">✕</button>
+      </div>
+    `).join('');
+  } else {
+    footer.style.display = 'none';
+    mobileBar.classList.remove('show');
+    items.innerHTML = `<div class="cart-empty"><div class="cart-empty-icon">🍱</div><div class="cart-empty-text">Корзина пуста.<br>Добавьте что-нибудь вкусное!</div></div>`;
+  }
+}
+
+function deleteFromCart(uid) {
+  cart = cart.filter(c => c.uid !== uid);
+  updateCartUI();
+  updateItemControl(uid);
+}
+
+function formatPrice(p) {
+  return p.toLocaleString('ru-RU') + ' ₽';
+}
+
+/* ═══════════════════════════════════════════════════
+   CART DRAWER OPEN / CLOSE
+   ═══════════════════════════════════════════════════ */
+function openCart() {
+  document.getElementById('cartOverlay').classList.add('open');
+  document.getElementById('cartDrawer').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeCart() {
+  document.getElementById('cartOverlay').classList.remove('open');
+  document.getElementById('cartDrawer').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+/* ═══════════════════════════════════════════════════
+   ORDER MODAL
+   ═══════════════════════════════════════════════════ */
+function openOrderModal() {
+  if (cart.length === 0) {
+    showToast('Добавьте товары в корзину');
+    return;
+  }
+  closeCart();
+
+  const summary = document.getElementById('orderSummary');
+  const totalPrice = cart.reduce((s, c) => s + c.price * c.qty, 0);
+
+  summary.innerHTML = `
+    <div class="order-summary-title">Ваш заказ</div>
+    ${cart.map(c => `
+      <div class="order-summary-item">
+        <span>${c.name} × ${c.qty}</span>
+        <span>${formatPrice(c.price * c.qty)}</span>
+      </div>
+    `).join('')}
+    <div class="order-summary-total">
+      <span>Итого</span>
+      <span>${formatPrice(totalPrice)}</span>
+    </div>
+  `;
+
+  document.getElementById('orderFormWrap').classList.remove('hide');
+  document.getElementById('orderSuccess').classList.remove('show');
+  document.getElementById('orderModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeOrderModal() {
+  document.getElementById('orderModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+/* ═══════════════════════════════════════════════════
+   PHONE MASK
+   ═══════════════════════════════════════════════════ */
+function formatPhone(v) {
+  let d = v.replace(/\D/g, '');
+  if (d.startsWith('8')) d = '7' + d.slice(1);
+  if (!d.startsWith('7')) d = '7' + d;
+  d = d.slice(0, 11);
+  let f = '+7';
+  if (d.length > 1) f += ' (' + d.slice(1, 4);
+  if (d.length > 4) f += ') ' + d.slice(4, 7);
+  if (d.length > 7) f += '-' + d.slice(7, 9);
+  if (d.length > 9) f += '-' + d.slice(9, 11);
+  return f;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const ph = document.getElementById('customerPhone');
+  ph.addEventListener('input', (e) => {
+    const pos = e.target.selectionStart;
+    const prev = e.target.value;
+    e.target.value = formatPhone(e.target.value);
+  });
+  ph.addEventListener('focus', () => {
+    if (!ph.value) ph.value = '+7 (';
+  });
+});
+
+/* ═══════════════════════════════════════════════════
+   SUBMIT ORDER
+   ═══════════════════════════════════════════════════ */
+function submitOrder() {
+  const name = document.getElementById('customerName');
+  const phone = document.getElementById('customerPhone');
+  const nameErr = document.getElementById('nameError');
+  const phoneErr = document.getElementById('phoneError');
+  let valid = true;
+
+  // Reset
+  name.classList.remove('error');
+  phone.classList.remove('error');
+  nameErr.classList.remove('show');
+  phoneErr.classList.remove('show');
+
+  if (!name.value.trim()) {
+    name.classList.add('error');
+    nameErr.classList.add('show');
+    valid = false;
+  }
+
+  const digits = phone.value.replace(/\D/g, '');
+  if (digits.length < 11) {
+    phone.classList.add('error');
+    phoneErr.classList.add('show');
+    valid = false;
+  }
+
+  if (!valid) return;
+
+  // Simulate submission
+  const btn = document.getElementById('submitOrder');
+  btn.disabled = true;
+  btn.textContent = 'Отправляем...';
+
+  setTimeout(() => {
+    document.getElementById('orderFormWrap').classList.add('hide');
+    document.getElementById('orderSuccess').classList.add('show');
+    btn.disabled = false;
+    btn.textContent = 'Подтвердить заказ';
+  }, 1200);
+}
+
+function resetOrder() {
+  cart = [];
+  updateCartUI();
+  // Reset all item controls
+  MENU_DATA.forEach(cat => {
+    cat.items.forEach((item, i) => {
+      updateItemControl(`${cat.id}-${i}`);
+    });
+  });
+  closeOrderModal();
+  document.getElementById('customerName').value = '';
+  document.getElementById('customerPhone').value = '';
+  showToast('Спасибо за заказ! Ждём вас 🎉');
+}
+
+/* ═══════════════════════════════════════════════════
+   THEME TOGGLE
+   ═══════════════════════════════════════════════════ */
+function initTheme() {
+  const saved = localStorage.getItem('sushi-theme');
+  const pref = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  setTheme(pref);
+}
+
+function setTheme(t) {
+  document.documentElement.setAttribute('data-theme', t);
+  document.getElementById('themeToggle').textContent = t === 'dark' ? '☀️' : '🌙';
+  localStorage.setItem('sushi-theme', t);
+}
+
+document.getElementById('themeToggle').addEventListener('click', () => {
+  const current = document.documentElement.getAttribute('data-theme');
+  setTheme(current === 'dark' ? 'light' : 'dark');
+});
+
+/* ═══════════════════════════════════════════════════
+   TOAST
+   ═══════════════════════════════════════════════════ */
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+/* ═══════════════════════════════════════════════════
+   HEADER SCROLL
+   ═══════════════════════════════════════════════════ */
+let scrollTicking = false;
+window.addEventListener('scroll', () => {
+  if (!scrollTicking) {
+    requestAnimationFrame(() => {
+      const h = document.getElementById('header');
+      h.classList.toggle('scrolled', window.scrollY > 10);
+      updateActiveCategory();
+      scrollTicking = false;
+    });
+    scrollTicking = true;
+  }
+});
+
+/* ═══════════════════════════════════════════════════
+   HERO ANIMATION
+   ═══════════════════════════════════════════════════ */
+setTimeout(() => document.getElementById('hero').classList.add('loaded'), 100);
+
+/* ═══════════════════════════════════════════════════
+   INIT
+   ═══════════════════════════════════════════════════ */
+initTheme();
+renderMenu();
+</script>
+</body>
+</html>
